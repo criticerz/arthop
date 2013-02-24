@@ -392,6 +392,40 @@ class Users extends CI_Model
 		$this->db->where('user_id', $user_id);
 		$this->db->delete($this->profile_table_name);
 	}
+
+	// New things
+	function is_admin() {
+		if( $this->session->userdata('role') == 1 ) 
+			return true;
+		else
+			return false;
+	}
+	function is_artist() {
+		if( $this->session->userdata('role') == 2 ) 
+			return true;
+		else
+			return false;
+	}
+	function is_gallery() {
+		if( $this->session->userdata('role') == 3 ) 
+			return true;
+		else
+			return false;
+	}
+	function get_role() {
+		return $this->session->userdata('role');
+	}
+	function get_username() {
+		return $this->session->userdata('username');
+	}
+	function change_role($new_role_id) {
+		$update_data = array('role_id' => $new_role_id);
+		$this->db->where('id', $this->tank_auth->get_user_id());
+		$this->db->update('users', $update_data);
+
+		$this->session->set_flashdata('success', "Thank you!");
+	}
+
 }
 
 /* End of file users.php */
